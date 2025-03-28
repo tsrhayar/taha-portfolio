@@ -4,12 +4,12 @@ import { useEffect } from "react";
 
 const GlowCard = ({ children, identifier }) => {
   useEffect(() => {
-    if (typeof window === "undefined") return; // Ensure code runs only in the browser
+    if (typeof window === "undefined") return; // Prevents SSR execution
 
     const CONTAINER = document.querySelector(`.glow-container-${identifier}`);
     const CARDS = document.querySelectorAll(`.glow-card-${identifier}`);
 
-    if (!CONTAINER || !CARDS.length) return; // Prevent errors if elements are missing
+    if (!CONTAINER || !CARDS.length) return;
 
     const CONFIG = {
       proximity: 40,
@@ -53,19 +53,6 @@ const GlowCard = ({ children, identifier }) => {
 
     document.body.addEventListener("pointermove", UPDATE);
 
-    const RESTYLE = () => {
-      CONTAINER.style.setProperty("--gap", CONFIG.gap);
-      CONTAINER.style.setProperty("--blur", CONFIG.blur);
-      CONTAINER.style.setProperty("--spread", CONFIG.spread);
-      CONTAINER.style.setProperty(
-        "--direction",
-        CONFIG.vertical ? "column" : "row"
-      );
-    };
-
-    RESTYLE();
-    UPDATE();
-
     return () => {
       document.body.removeEventListener("pointermove", UPDATE);
     };
@@ -82,6 +69,7 @@ const GlowCard = ({ children, identifier }) => {
 };
 
 export default GlowCard;
+
 
 
 // "use client"
